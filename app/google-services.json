@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "737535920828",
+    "firebase_url": "https://porssisahko-8d723-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "porssisahko-8d723",
     "storage_bucket": "porssisahko-8d723.appspot.com"
   },
@@ -14,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "737535920828-jnit09o9d9m097jjaceu5trc397ol1ru.apps.googleusercontent.com",
+          "client_id": "737535920828-ojm6s9ghbavegnvsdjm6jc1ccke403o3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
