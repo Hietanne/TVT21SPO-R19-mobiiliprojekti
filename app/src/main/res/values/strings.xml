@@ -10,4 +10,9 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="tummatila">Tummatila</string>
+    <string name="valuutta">Valuutta</string>
+    <string name="ilmoitukset">Ilmoitukset</string>
+    <string name="p_rssis_hk_n_tilanne">Pörssisähkön Tilanne</string>
+    <string name="oma_kulutusarvio">Oma Kulutusarvio</string>
 </resources>
