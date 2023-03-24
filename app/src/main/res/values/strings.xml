@@ -15,4 +15,10 @@
     <string name="ilmoitukset">Ilmoitukset</string>
     <string name="p_rssis_hk_n_tilanne">Pörssisähkön Tilanne</string>
     <string name="oma_kulutusarvio">Oma Kulutusarvio</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kirjaudu_sis_n_tallentaaksesi">Kirjaudu sisään tallentaaksesi</string>
+    <string name="kulutusarviosi_turvaan">kulutusarviosi turvaan</string>
+    <string name="kirjaudu_sis_n">Kirjaudu Sisään</string>
+    <string name="jatka">Jatka Kirjautumatta</string>
 </resources>

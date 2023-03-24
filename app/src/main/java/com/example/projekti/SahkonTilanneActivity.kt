@@ -13,7 +13,7 @@ class SahkonTilanneActivity : AppCompatActivity() {
         val settingsButton:Button = findViewById(R.id.settingsButton)
 
         nextButton.setOnClickListener {
-            val intent = Intent(this, OmaKulutusarvioActivity::class.java);
+            val intent = Intent(this, PopupActivity::class.java);
             startActivity(intent);
         }
 
