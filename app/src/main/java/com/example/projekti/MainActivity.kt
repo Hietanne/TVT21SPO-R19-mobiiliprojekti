@@ -8,17 +8,6 @@ import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
 
-    private fun handleTheme() {
-        val sharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
-        val isDarkModeOn = sharedPreferences.getBoolean("darkMode", false)
-        if (isDarkModeOn) {
-            setTheme(R.style.Theme_Projekti_Dark)
-
-        } else {
-            setTheme(R.style.Theme_Projekti)
-        }
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         handleTheme()
@@ -33,3 +22,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    private fun handleTheme() {
+        val sharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
+        val isDarkModeOn = sharedPreferences.getBoolean("darkMode", false)
+        if (isDarkModeOn) {
+            setTheme(R.style.Theme_Projekti_Dark)
+
+        } else {
+            setTheme(R.style.Theme_Projekti)
+        }
+    }
+}
