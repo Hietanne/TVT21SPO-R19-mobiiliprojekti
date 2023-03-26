@@ -1,17 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Projekti" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#9F9E9E</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+
+    <style name="Theme.Projekti" parent="Theme.AppCompat.Light.NoActionBar">
+
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- <item name="android:windowBackground">@color/</item>-->
     </style>
 
     <style name="Theme.Projekti.NoActionBar">
@@ -22,4 +17,9 @@
     <style name="Theme.Projekti.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Projekti.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Projekti.Dark" parent="Theme.AppCompat.NoActionBar">
+        <!--<item name="android:windowBackground">@color/dark</item>-->
+    </style>
+
 </resources>

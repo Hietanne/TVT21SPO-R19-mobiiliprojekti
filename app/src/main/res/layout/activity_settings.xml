@@ -36,11 +36,13 @@
 
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/darkModeCheckbox"
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/darkModeButton"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/tummatila" />
+            android:layout_height="wrap_content"
+            android:text="Tumma tila"
+            ></androidx.appcompat.widget.SwitchCompat>
+
 
         <CheckBox
             android:id="@+id/valuuttaCheckbox"
