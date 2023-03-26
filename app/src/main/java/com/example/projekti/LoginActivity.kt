@@ -24,6 +24,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inflate the layout using the binding object
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+
+        // Set the content view to the root view of the binding object
         setContentView(binding.root)
 
         // Initialize Firebase Auth

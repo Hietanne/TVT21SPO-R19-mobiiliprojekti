@@ -15,6 +15,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val loginButton = findViewById<Button>(R.id.login_button)
+        loginButton.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
         //button that takes you to the SahkonTilanneActivity
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
