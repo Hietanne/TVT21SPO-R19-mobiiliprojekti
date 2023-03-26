@@ -43,7 +43,6 @@
             android:text="Tumma tila"
             ></androidx.appcompat.widget.SwitchCompat>
 
-
         <CheckBox
             android:id="@+id/valuuttaCheckbox"
             android:layout_width="wrap_content"
