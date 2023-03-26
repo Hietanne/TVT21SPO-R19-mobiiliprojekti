@@ -2,6 +2,8 @@ package com.example.projekti
 
 import android.os.Bundle
 import android.util.Log
+import android.content.Intent
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -21,11 +23,25 @@ data class Price(
 class SahkonTilanneActivity : AppCompatActivity() {
     private val client = OkHttpClient()
     private val pricesList = mutableListOf<Price>()
+    
+    val nextButton:Button = findViewById(R.id.kulutusarvioButton)
+    val settingsButton:Button = findViewById(R.id.settingsButton)
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sahkon_tilanne)
+
+        nextButton.setOnClickListener {
+            val intent = Intent(this, PopupActivity::class.java);
+            startActivity(intent);
+        }
+
+        settingsButton.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java);
+            startActivity(intent);
+        }
+        
         lifecycleScope.launch {
             try {
                 fetchPrices()
@@ -79,8 +95,3 @@ class SahkonTilanneActivity : AppCompatActivity() {
         Log.d("displayPrices", "Formatted prices:\n$stringBuilder")
     }
 }
-
-
-
-
-
