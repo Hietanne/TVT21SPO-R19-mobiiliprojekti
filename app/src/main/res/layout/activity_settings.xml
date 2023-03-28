@@ -1,9 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
+    android:scrollbars="none"
     tools:context=".SettingsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp">
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_baseline_arrow_back_24"
+                android:backgroundTint="@color/black"/>
+
+            <TextView
+                android:id="@+id/asetuksetTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="Asetukset"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/darkModeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tumma tila"
+            ></androidx.appcompat.widget.SwitchCompat>
+
+        <CheckBox
+            android:id="@+id/valuuttaCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/valuutta" />
+
+        <CheckBox
+            android:id="@+id/ilmoituksetCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/ilmoitukset" />
+
+    </LinearLayout>
+
+</ScrollView>

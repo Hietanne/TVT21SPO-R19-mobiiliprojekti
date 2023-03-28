@@ -1,20 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".SahkonTilanneActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sähkön tilanne"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_baseline_settings_24"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sahkontilanneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/p_rssis_hk_n_tilanne"
+                android:backgroundTint="#5E5E5E"/>
+
+            <Button
+                android:id="@+id/kulutusarvioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/oma_kulutusarvio"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/graafiTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp"
+            android:text="Tähän graafi"/>
+
+        <TextView
+             android:id="@+id/textView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Sähkön tilanne"
+             android:textSize="24sp"
+             android:textStyle="bold"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+</ScrollView>
