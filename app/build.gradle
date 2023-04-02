@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
 }
-
 android {
     namespace 'com.example.projekti'
     compileSdk 33
@@ -35,8 +34,10 @@ android {
         viewBinding true
     }
 }
-
 dependencies {
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'

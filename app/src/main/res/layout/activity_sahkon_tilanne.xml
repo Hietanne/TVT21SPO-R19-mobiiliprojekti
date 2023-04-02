@@ -38,23 +38,21 @@
                 android:text="@string/oma_kulutusarvio"/>
 
         </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
 
-        <TextView
-            android:id="@+id/graafiTextView"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="30dp"
-            android:text="Tähän graafi"/>
-
-        <TextView
-             android:id="@+id/textView"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Sähkön tilanne"
-             android:textSize="24sp"
-             android:textStyle="bold"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical" />
 
     </LinearLayout>
 
