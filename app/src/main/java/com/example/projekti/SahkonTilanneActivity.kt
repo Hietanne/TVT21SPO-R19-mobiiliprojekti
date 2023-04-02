@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
@@ -26,6 +27,8 @@ class SahkonTilanneActivity : AppCompatActivity() {
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        handleTheme()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sahkon_tilanne)
         val nextButton:Button = findViewById(R.id.kulutusarvioButton)
@@ -93,6 +96,16 @@ class SahkonTilanneActivity : AppCompatActivity() {
         }
         Log.d("displayPrices", "Formatted prices:\n$stringBuilder")
     }
+
+    private fun handleTheme() {
+        val sharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
+        when (sharedPreferences.getInt("currentThemeMode", -1)) {
+            2 -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
+            1 -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            else -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
+        }
+    }
+
 }
 
 

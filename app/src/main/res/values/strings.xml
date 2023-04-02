@@ -24,4 +24,7 @@
     <string name="kulutusarviosi_turvaan">kulutusarviosi turvaan</string>
     <string name="kirjaudu_sis_n">Kirjaudu Sisään</string>
     <string name="jatka">Jatka Kirjautumatta</string>
+    <string name="dark">Tumma</string>
+    <string name="light">Vaalea</string>
+    <string name="system">Järjestelmä</string>
 </resources>
