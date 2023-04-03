@@ -1,6 +1,5 @@
 package com.example.projekti
 
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
