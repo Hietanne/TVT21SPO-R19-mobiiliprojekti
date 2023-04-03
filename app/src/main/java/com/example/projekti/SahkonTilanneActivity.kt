@@ -34,6 +34,8 @@ class SahkonTilanneActivity : AppCompatActivity() {
         val nextButton:Button = findViewById(R.id.kulutusarvioButton)
         val settingsButton: Button = findViewById(R.id.settingsButton)
 
+
+
         nextButton.setOnClickListener {
             val intent = Intent(this, PopupActivity::class.java);
             startActivity(intent);

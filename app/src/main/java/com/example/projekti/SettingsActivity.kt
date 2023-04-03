@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseAuth
 import android.util.Log
 import android.widget.Button
 import android.widget.RadioButton
@@ -12,13 +13,15 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import android.content.SharedPreferences
+import android.view.View
 
 class SettingsActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
-
+        
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
@@ -44,6 +47,22 @@ class SettingsActivity : AppCompatActivity() {
                 sharedPreferences.edit().putInt("currentThemeMode", -1).apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
+        }
+
+        val auth = FirebaseAuth.getInstance()
+
+        // Hae signout-nappi layout-tiedostosta
+        val signoutButton = findViewById<Button>(R.id.signout)
+
+        // Piilota signout-nappi, jos käyttäjä ei ole kirjautunut
+        if (auth.currentUser == null) {
+            signoutButton.visibility = View.GONE
+        }
+
+        // Aseta klikkikuuntelija signout-napille
+        signoutButton.setOnClickListener {
+            auth.signOut()
+            signoutButton.visibility = View.GONE
         }
 
         val backButton:Button = findViewById(R.id.backButton)
