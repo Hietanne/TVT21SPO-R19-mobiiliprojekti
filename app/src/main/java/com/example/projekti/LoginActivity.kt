@@ -83,12 +83,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginUser(email: String, password: String) {
+        val DBClass = Database()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
+                    val uid = user?.uid
+
+                    //Kun kirjaudutaan niin samalla tarkastetaan kulutus hetkellä.
+                    DBClass.getKulutusByUid(uid.toString()) { kulutus ->
+                        if (kulutus != null) {
+                            Log.w("Databasen kulutus käyttäjälle", kulutus)
+                        }
+                        else {
+                            Log.w(TAG, "Kulutus not found")
+                        }
+
+                    }
+
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -101,13 +115,20 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun registerUser(email: String, password: String) {
+
+        val DBClass = Database()
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
+
                     val user = auth.currentUser
+                    val uid = user?.uid
+
                     sendEmailVerification()
+                    DBClass.addUser(uid.toString())
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -145,6 +166,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "EmailPassword"
+        private const val TAG = "LoginActivity"
     }
 }

@@ -18,10 +18,10 @@ class OmaKulutusarvioActivity : AppCompatActivity() {
         val user = Firebase.auth.currentUser
         if (user != null) {
             // User is signed in
-            Log.d(TAG, "Kirjauduttu sisään")
+            Log.d("OmaKulutusarvioActivity", "Kirjauduttu sisään")
         } else {
             // No user is signed in
-            Log.d(TAG, "Ei kirjauduttu")
+            Log.d("OmaKulutusarvioActivity", "Ei kirjauduttu")
         }
 
         val settingsButton:Button = findViewById(R.id.settingsButton)
