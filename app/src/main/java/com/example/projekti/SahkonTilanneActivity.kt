@@ -4,21 +4,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -40,14 +31,12 @@ data class Price(
 class SahkonTilanneActivity : AppCompatActivity() {
     private val client = OkHttpClient()
     private val pricesList = mutableListOf<Price>()
-
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sahkon_tilanne)
         val nextButton: Button = findViewById(R.id.kulutusarvioButton)
         val settingsButton: Button = findViewById(R.id.settingsButton)
-
         nextButton.setOnClickListener {
             val intent = Intent(this, PopupActivity::class.java);
             startActivity(intent);
@@ -69,6 +58,88 @@ class SahkonTilanneActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayPricesList(pricesList: List<Price>) {
+        val pricesTable = findViewById<TableLayout>(R.id.prices_table)
+
+
+        // Clear the table before adding rows
+        pricesTable.removeAllViews()
+
+        //make the table scrollable if there are too many rows
+        pricesTable.isVerticalScrollBarEnabled = true
+
+
+        // Create header row
+        val headerRow = TableRow(this)
+        val headerPriceCell = TextView(this).apply {
+            text = "Price (C/kWh)"
+            setPadding(8, 8, 8, 8)
+            //make text bold
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
+
+        }
+        val headerStartCell = TextView(this).apply {
+            text = "Start"
+            setPadding(8, 8, 8, 8)
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
+        }
+        val headerEndCell = TextView(this).apply {
+            text = "End"
+            setPadding(8, 8, 8, 8)
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
+        }
+        headerRow.addView(headerPriceCell)
+        headerRow.addView(headerStartCell)
+        headerRow.addView(headerEndCell)
+        pricesTable.addView(headerRow)
+
+        // Add rows for each price entry
+        for (price in pricesList) {
+            val row = TableRow(this)
+            val priceCell = TextView(this).apply {
+                text = price.price
+                setPadding(8, 8, 8, 8)
+            }
+            val startCell = TextView(this).apply {
+                //format the start date to a readable date
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val date = dateFormat.parse(price.start)
+                val readableDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                val readableDate = readableDateFormat.format(date)
+                text = readableDate
+                setPadding(8, 8, 8, 8)
+            }
+            val endCell = TextView(this).apply {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val date = dateFormat.parse(price.end)
+                val readableDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                val readableDate = readableDateFormat.format(date)
+                text = readableDate
+                setPadding(8, 8, 8, 8)
+            }
+            row.addView(priceCell)
+            row.addView(startCell)
+            row.addView(endCell)
+            pricesTable.addView(row)
+        }
+
+
+        //add a button to toggle the sort order
+        val sortButton = findViewById<Button>(R.id.sort_button)
+        sortButton.setOnClickListener {
+            //toggle the sort order
+            val sortedPrice = pricesList.sortedBy { it.start }
+            //if its already toggled then toggle it back
+            if (sortedPrice == pricesList) {
+                displayPricesList(pricesList.reversed())
+            } else {
+                displayPricesList(sortedPrice)
+            }
+        }
+
+    }
+
+
     private suspend fun fetchPrices() {
         val request = Request.Builder()
             .url("https://api.porssisahko.net/v1/latest-prices.json")
@@ -80,7 +151,6 @@ class SahkonTilanneActivity : AppCompatActivity() {
                 throw IOException("Unexpected code $response")
             }
             val responseBody = response.body?.string()
-            Log.d("fetchPrices", "Response body: $responseBody")
             val jsonObject = JSONTokener(responseBody).nextValue() as JSONObject
             val jsonArray = jsonObject.getJSONArray("prices")
             if (jsonArray != null) {
@@ -92,47 +162,15 @@ class SahkonTilanneActivity : AppCompatActivity() {
                     pricesList.add(Price(priceString, startString, endString))
                 }
 
-                Log.d("fetchPrices", "List: $pricesList")
+
             } else {
                 Log.d("fetchPrices", "JSON array is null")
             }
         }
     }
 
-    private fun displayPricesList(pricesList: List<Price>) {
-        val recyclerView = findViewById<RecyclerView>(R.id.myRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = PricesAdapter(pricesList)
-    }
 
-    private class PricesAdapter(private val pricesList: List<Price>) :
-        RecyclerView.Adapter<PricesAdapter.ViewHolder>() {
-
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val priceTextView: TextView = view.findViewById(R.id.priceTextView)
-            val startTextView: TextView = view.findViewById(R.id.startTextView)
-            val endTextView: TextView = view.findViewById(R.id.endTextView)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.price_item, parent, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val price = pricesList[position]
-            holder.priceTextView.text = price.price
-            holder.startTextView.text = price.start
-            holder.endTextView.text = price.end
-        }
-
-        override fun getItemCount(): Int {
-            return pricesList.size
-        }
-    }
     private fun displayPrices(pricesList: List<Price>) {
-
 
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -144,7 +182,6 @@ class SahkonTilanneActivity : AppCompatActivity() {
 
         for (i in pricesList.size - 1 downTo 0) {
             val price = pricesList[i]
-            Log.d("displayPrices", "Price: ${price.price}, start: ${price.start}")
             entries.add(Entry((pricesList.size - i - 1).toFloat(), price.price.toFloat()))
         }
         val xAxis = chart.xAxis
@@ -182,6 +219,7 @@ class SahkonTilanneActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Price: $price", Toast.LENGTH_SHORT).show()
                 }
             }
+
             override fun onNothingSelected() {}
         })
     }
