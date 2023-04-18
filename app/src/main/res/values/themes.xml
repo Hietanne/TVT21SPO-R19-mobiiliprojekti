@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
 
-    <style name="Theme.Projekti" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Projekti" parent="Theme.AppCompat.DayNight.NoActionBar">
 
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/black</item>
@@ -17,9 +17,5 @@
     <style name="Theme.Projekti.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Projekti.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="Theme.Projekti.Dark" parent="Theme.AppCompat.NoActionBar">
-        <!--<item name="android:windowBackground">@color/dark</item>-->
-    </style>
 
 </resources>

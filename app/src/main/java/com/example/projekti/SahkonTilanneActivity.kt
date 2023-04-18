@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -33,10 +34,13 @@ class SahkonTilanneActivity : AppCompatActivity() {
     private val pricesList = mutableListOf<Price>()
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        handleTheme()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sahkon_tilanne)
         val nextButton: Button = findViewById(R.id.kulutusarvioButton)
         val settingsButton: Button = findViewById(R.id.settingsButton)
+
         nextButton.setOnClickListener {
             val intent = Intent(this, PopupActivity::class.java);
             startActivity(intent);
@@ -223,6 +227,16 @@ class SahkonTilanneActivity : AppCompatActivity() {
             override fun onNothingSelected() {}
         })
     }
+
+    private fun handleTheme() {
+        val sharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
+        when (sharedPreferences.getInt("currentThemeMode", -1)) {
+            2 -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
+            1 -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            else -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
+        }
+    }
+
 }
 
 

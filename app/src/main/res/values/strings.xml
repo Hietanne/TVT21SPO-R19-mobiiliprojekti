@@ -15,7 +15,7 @@
     <string name="hinta">Hinta</string>
     <string name="tummatila">Tummatila</string>
     <string name="valuutta">Valuutta</string>
-    <string name="ilmoitukset">Ilmoitukset</string>
+    <string name="ilmoitukset">Ajasta ilmoitus</string>
     <string name="p_rssis_hk_n_tilanne">Pörssisähkön Tilanne</string>
     <string name="oma_kulutusarvio">Oma Kulutusarvio</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -24,4 +24,8 @@
     <string name="kulutusarviosi_turvaan">kulutusarviosi turvaan</string>
     <string name="kirjaudu_sis_n">Kirjaudu Sisään</string>
     <string name="jatka">Jatka Kirjautumatta</string>
+    <string name="web_client_id">849587092043-849587092043-9gl1kn0ovag2hmb70mge3hilk9qcr5fj.apps.googleusercontent.com</string>
+    <string name="dark">Tumma</string>
+    <string name="light">Vaalea</string>
+    <string name="system">Järjestelmä</string>
 </resources>
