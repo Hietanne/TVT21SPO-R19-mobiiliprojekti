@@ -23,8 +23,20 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import com.example.projekti.Fragmentit.NotificationFragment
 import com.example.projekti.databinding.ActivitySettingsBinding
+import java.text.ChoiceFormat.nextDouble
 import java.time.LocalDate
 import java.util.*
+import kotlin.random.Random
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
+import java.time.LocalTime
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class SettingsActivity : AppCompatActivity() {
     private val updateUserRequestCode = 1
@@ -33,6 +45,7 @@ class SettingsActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("Debug", "SettingsActivity onCreate") // Debug message
         val sharedPreferences: SharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
 
         super.onCreate(savedInstanceState)
@@ -128,28 +141,69 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleNotification() {
-        val intent = Intent(applicationContext, Notification::class.java)
-        val title = "Pörssisähkö nyt"
-        val message = "Pörssisähkön hinta nyt on 5,89 c/kWh"
-        intent.putExtra(titleExtra, title)
-        intent.putExtra(messageExtra, message)
+        Log.d("Debug", "Scheduling notification...")
+        lifecycleScope.launch {
+            val intent = Intent(applicationContext, Notification::class.java)
+            val title = "Pörssisähkö nyt"
+            val price = fetchCurrentHourElectricityPrice()
+            val message = "Pörssisähkön hinta nyt on $price c/kWh"
+            intent.putExtra(titleExtra, title)
+            intent.putExtra(messageExtra, message)
 
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            notificationID,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+            val pendingIntent = PendingIntent.getBroadcast(
+                applicationContext,
+                notificationID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
 
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val time = getTime()
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            time,
-            pendingIntent
-        )
-        showAlert(time, title, message)
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val time = getTime()
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                time,
+                pendingIntent
+            )
+            showAlert(time, title, message)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun fetchCurrentHourElectricityPrice(): String {
+        return withContext(Dispatchers.IO) {
+            val url = "https://api.porssisahko.net/v1/price.json"
+            val dateTime = ZonedDateTime.now(ZoneId.of("Europe/Helsinki")).plusHours(3)
+            val date = dateTime.toLocalDate().toString()
+            val hour = dateTime.hour.toString()
+
+            Log.d("Debug", "Fetching electricity price for date=$date and hour=$hour")
+
+            val connection = URL("$url?date=$date&hour=$hour").openConnection() as HttpURLConnection
+
+            var result = ""
+
+            try {
+                connection.connect()
+
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val inputStream = connection.inputStream.bufferedReader()
+                    val responseJson = JSONObject(inputStream.use { it.readText() })
+                    val price = responseJson.getDouble("price")
+                    result = price.toString()
+                    Log.d("Debug", "Fetched price: $result")
+                } else {
+                    Log.d("Debug", "HTTP response not OK, response code: ${connection.responseCode}")
+                }
+            } catch (e: Exception) {
+                Log.e("Error", "Error fetching electricity price: $e")
+            } finally {
+                connection.disconnect()
+            }
+
+            result
+        }
     }
 
     private fun showAlert(time: Long, title: String, message: String) {
@@ -165,6 +219,7 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getTime(): Long {
         val minute = binding.timePicker.minute
         val hour = binding.timePicker.hour
@@ -174,10 +229,14 @@ class SettingsActivity : AppCompatActivity() {
 
         val calendar = Calendar.getInstance()
         calendar.set(year, month, day, hour, minute)
-        return calendar.timeInMillis
+        return calendar.timeInMillis.also {
+            Log.d("Debug", "Scheduled notification time: $it") // Debug message
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
+        Log.d("Debug", "Creating notification channel...") // Debug message
         val name = "Notif Channel"
         val desc = "A Description of the Channel"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -185,5 +244,6 @@ class SettingsActivity : AppCompatActivity() {
         channel.description = desc
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+        Log.d("Debug", "Notification channel created") // Debug message
     }
 }
