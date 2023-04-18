@@ -168,6 +168,12 @@
             android:layout_height="wrap_content"
             android:text="Signout" />
 
+        <Button
+            android:id="@+id/edit_user_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Muokkaa käyttäjää"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.example.projekti
 
+
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -26,13 +27,14 @@ import java.time.LocalDate
 import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
+    private val updateUserRequestCode = 1
 
     private lateinit var binding : ActivitySettingsBinding
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
-        
+
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -78,23 +80,51 @@ class SettingsActivity : AppCompatActivity() {
 
         val auth = FirebaseAuth.getInstance()
 
-        // Hae signout-nappi layout-tiedostosta
         val signoutButton = findViewById<Button>(R.id.signout)
 
-        // Piilota signout-nappi, jos käyttäjä ei ole kirjautunut
         if (auth.currentUser == null) {
             signoutButton.visibility = View.GONE
         }
 
-        // Aseta klikkikuuntelija signout-napille
+        val editUserButton = findViewById<Button>(R.id.edit_user_button)
+
+        if (auth.currentUser != null) {
+            editUserButton.visibility = View.VISIBLE
+        }
+
         signoutButton.setOnClickListener {
             auth.signOut()
             signoutButton.visibility = View.GONE
+            editUserButton.visibility = View.GONE
         }
 
-        val backButton:Button = findViewById(R.id.backButton)
+        val backButton: Button = findViewById(R.id.backButton)
         backButton.setOnClickListener {
             onBackPressed()
+        }
+
+        editUserButton.setOnClickListener {
+            val intent = Intent(this, UpdateUserActivity::class.java)
+            startActivityForResult(intent, updateUserRequestCode)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == updateUserRequestCode) {
+            val editUserButton = findViewById<Button>(R.id.edit_user_button)
+            val signoutButton = findViewById<Button>(R.id.signout)
+
+            val auth = FirebaseAuth.getInstance()
+
+            if (auth.currentUser != null) {
+                editUserButton.visibility = View.VISIBLE
+                signoutButton.visibility = View.VISIBLE
+            } else {
+                editUserButton.visibility = View.GONE
+                signoutButton.visibility = View.GONE
+            }
         }
     }
 
