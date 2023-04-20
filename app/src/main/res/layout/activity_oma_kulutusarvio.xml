@@ -40,17 +40,51 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/graafiTextView"
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="30dp"
-            android:text="Tähän graafi"/>
+            android:text="kulutusarvio" />
+
+        <EditText
+            android:id="@+id/energyUsageInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="100"
+            android:inputType="number" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <TextView
-            android:id="@+id/omaKulutusTextView"
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tähän oma sähkönkulutuskenttä"/>
+            android:text="kWh" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="189dp"
+            android:layout_height="wrap_content"
+            android:text="Sähkön hinta tänään" />
+
+        <TextView
+            android:id="@+id/textViewPriceToday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kustannusarvio" />
+
+        <TextView
+            android:id="@+id/textViewAverageCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
