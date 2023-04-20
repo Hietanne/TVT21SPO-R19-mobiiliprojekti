@@ -28,14 +28,14 @@
                 android:id="@+id/sahkontilanneButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/p_rssis_hk_n_tilanne"/>
+                android:text="@string/p_rssis_hk_n_tilanne" />
 
             <Button
                 android:id="@+id/kulutusarvioButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/oma_kulutusarvio"
-                android:backgroundTint="#5E5E5E"/>
+                android:backgroundTint="#5E5E5E"
+                android:text="@string/oma_kulutusarvio" />
 
         </LinearLayout>
 
@@ -43,15 +43,18 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="kulutusarvio" />
+            android:text="kulutusarvio"
+            android:textAlignment="center" />
 
         <EditText
             android:id="@+id/energyUsageInput"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="100"
-            android:inputType="number" />
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:textAlignment="center" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -61,30 +64,42 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="kWh" />
+            android:text="kWh"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="189dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sähkön hinta tänään" />
+            android:text="Sähkön hinta tänään"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/textViewPriceToday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kustannusarvio" />
+            android:text="Kustannusarvio"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/textViewAverageCost"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/sendConsumptionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Tallenna kulutus" />
 
     </LinearLayout>
 
