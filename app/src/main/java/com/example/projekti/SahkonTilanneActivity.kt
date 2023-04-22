@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -42,8 +44,34 @@ class SahkonTilanneActivity : AppCompatActivity() {
         val settingsButton: Button = findViewById(R.id.settingsButton)
 
         nextButton.setOnClickListener {
-            val intent = Intent(this, PopupActivity::class.java);
-            startActivity(intent);
+            val dialogView = layoutInflater.inflate(R.layout.popup_layout, null)
+            val dialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setTitle("Kulutusarvio")
+                .create()
+
+            val kirjauduButton = dialogView.findViewById<Button>(R.id.kirjauduButton)
+            kirjauduButton.setOnClickListener {
+                if (FirebaseAuth.getInstance().currentUser != null) {
+                    startActivity(Intent(this, OmaKulutusarvioActivity::class.java))
+                } else {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                }
+                dialog.dismiss() // Sulje popup-ikkuna
+            }
+
+            val kirjautumattaButton = dialogView.findViewById<Button>(R.id.kirjautumattaButton)
+            kirjautumattaButton.setOnClickListener {
+                startActivity(Intent(this, OmaKulutusarvioActivity::class.java))
+                dialog.dismiss() // Sulje popup-ikkuna
+            }
+
+            // Jos käyttäjä on kirjautuneena Firebaseen, avataan suoraan OmaKulutusArvioActivity
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                startActivity(Intent(this, OmaKulutusarvioActivity::class.java))
+            } else {
+                dialog.show() // Näytä popup-ikkuna
+            }
         }
 
         settingsButton.setOnClickListener {
