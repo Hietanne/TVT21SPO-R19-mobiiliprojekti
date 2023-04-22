@@ -4,53 +4,52 @@ package com.example.projekti
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
+import android.content.SharedPreferences
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import com.google.firebase.auth.FirebaseAuth
 import android.util.Log
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.view.View
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
-import android.content.SharedPreferences
-import android.icu.util.Calendar
-import android.view.View
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import com.example.projekti.Fragmentit.NotificationFragment
+import androidx.lifecycle.lifecycleScope
 import com.example.projekti.databinding.ActivitySettingsBinding
-import java.text.ChoiceFormat.nextDouble
-import java.time.LocalDate
-import java.util.*
-import kotlin.random.Random
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
-import java.time.LocalTime
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
     private val updateUserRequestCode = 1
 
     private lateinit var binding : ActivitySettingsBinding
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var scheduledTimeTextView: TextView
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Debug", "SettingsActivity onCreate") // Debug message
-        val sharedPreferences: SharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE)
+
+
+        val isNotificationEnabled = sharedPreferences.getBoolean("notificationEnabled", false)
 
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        scheduledTimeTextView = binding.scheduledTimeTextView
+
+        updateScheduledTimeTextView()
 
         val themeRadioGroup: RadioGroup = findViewById(R.id.themeRadioGroup)
         val darkRadioButton: RadioButton = findViewById(R.id.darkModeButton)
@@ -59,9 +58,13 @@ class SettingsActivity : AppCompatActivity() {
 
         val ilmoituksetCheckBox : CheckBox = findViewById(R.id.ilmoituksetCheckbox)
         val ilmoituksetLayout : LinearLayout = findViewById(R.id.ilmoitusLayout)
-        
+
+        ilmoituksetCheckBox.isChecked = isNotificationEnabled
+        ilmoituksetLayout.visibility = if (isNotificationEnabled) View.VISIBLE else View.GONE
+
         ilmoituksetCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if ( isChecked ) {
+            sharedPreferences.edit().putBoolean("notificationEnabled", isChecked).apply()
+            if (isChecked) {
                 ilmoituksetLayout.visibility = View.VISIBLE
                 createNotificationChannel()
                 binding.submitButton.setOnClickListener {
@@ -161,12 +164,27 @@ class SettingsActivity : AppCompatActivity() {
 
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val time = getTime()
-            alarmManager.setExactAndAllowWhileIdle(
+            sharedPreferences.edit().putLong("scheduledTime", time).apply()
+            updateScheduledTimeTextView()
+            alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 time,
+                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
-            showAlert(time, title, message)
+
+            // Päivitä TextView-komponentin teksti
+            val scheduledTimeText: TextView = findViewById(R.id.scheduledTimeTextView)
+            scheduledTimeText.text = getScheduledTimeString(time)
+        }
+    }
+
+    private fun updateScheduledTimeTextView() {
+        val time = sharedPreferences.getLong("scheduledTime", -1)
+        if (time != -1L) {
+            binding.scheduledTimeTextView.text = getScheduledTimeString(time)
+        } else {
+            binding.scheduledTimeTextView.text = "Ilmoitusta ei ole vielä ajastettu"
         }
     }
 
@@ -204,6 +222,12 @@ class SettingsActivity : AppCompatActivity() {
 
             result
         }
+    }
+
+    private fun getScheduledTimeString(time: Long): String {
+        val date = Date(time)
+        val timeFormat = android.text.format.DateFormat.getTimeFormat(applicationContext)
+        return "Ilmoitus lähetetään päivittäin kello " + timeFormat.format(date)
     }
 
     private fun showAlert(time: Long, title: String, message: String) {
