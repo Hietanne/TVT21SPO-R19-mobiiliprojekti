@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Haluatko kirjautua sisään?"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/kirjauduButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kirjaudu"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/kirjautumattaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jatka kirjautumatta"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
