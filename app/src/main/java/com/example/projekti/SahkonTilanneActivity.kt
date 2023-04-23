@@ -136,6 +136,7 @@ class SahkonTilanneActivity : AppCompatActivity() {
                 //format the start date to a readable date
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val date = dateFormat.parse(price.start)
+                date.time += 3 * 60 * 60 * 1000
                 val readableDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
                 val readableDate = readableDateFormat.format(date)
                 text = readableDate
@@ -144,6 +145,8 @@ class SahkonTilanneActivity : AppCompatActivity() {
             val endCell = TextView(this).apply {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val date = dateFormat.parse(price.end)
+                //add 3 hours to the timestamp to get the correct time
+                date.time += 3 * 60 * 60 * 1000
                 val readableDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
                 val readableDate = readableDateFormat.format(date)
                 text = readableDate
@@ -224,6 +227,8 @@ class SahkonTilanneActivity : AppCompatActivity() {
                 val date = dateFormat.parse(pricesList[pricesList.size - 1 - value.toInt()].start)
                 //format the timestamp to a readable date
                 val formatter = SimpleDateFormat("HH' h ' dd' d ' MMM")
+                //add 3 hours to the timestamp to get the correct time
+                date.time += 3 * 60 * 60 * 1000
                 return formatter.format(date)
             }
         }
